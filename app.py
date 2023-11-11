@@ -9,9 +9,13 @@ app = Flask(__name__)
 api = Leapcell(
     os.environ.get("LEAPCELL_API_KEY"),
 )
-table = api.table("salamer/flask-blog", "tbl1723292788542648320", name_type="name")
-author = os.environ.get("AUTHOR", "Jedi")
+
+author = os.environ.get("AUTHOR", "Leapcell User")
 avatar = os.environ.get("AVATAR", "https://leapcell.io/logo.png")
+resource = os.environ.get("TABLE_RESOURCE")
+table_id = os.environ.get("TABLE_ID")
+
+table = api.table(resource, table_id, name_type="name")
 
 
 @app.route("/")
