@@ -15,7 +15,7 @@ avatar = os.environ.get("AVATAR", "https://leapcell.io/logo.png")
 resource = os.environ.get("TABLE_RESOURCE")
 table_id = os.environ.get("TABLE_ID")
 
-table = api.table(resource, table_id, name_type="name")
+table = api.table(repository=resource, table_id=table_id, name_type="name")
 
 
 @app.route("/")
