@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from leapcell import Leapcell
 import os
 import markdown
+import datetime
 
 
 app = Flask(__name__)
@@ -25,6 +26,9 @@ def index():
         "author": author,
         "avatar": avatar,
         "posts": records,
+        "timestamp_format": lambda timestamp: datetime.datetime.fromtimestamp(
+            timestamp
+        ).strftime("%B %d, %Y %H:%M:%S"),
     }
 
     return render_template("index.html", **params)
@@ -38,6 +42,9 @@ def category(category):
         "avatar": avatar,
         "posts": records,
         "category": category,
+        "timestamp_format": lambda timestamp: datetime.datetime.fromtimestamp(
+            timestamp
+        ).strftime("%B %d, %Y %H:%M:%S"),
     }
 
     return render_template("index.html", **params)
@@ -52,6 +59,9 @@ def post(post_id):
         "avatar": avatar,
         "post": record,
         "markdown_html": markdown_html,
+        "timestamp_format": lambda timestamp: datetime.datetime.fromtimestamp(
+            timestamp
+        ).strftime("%B %d, %Y %H:%M:%S"),
     }
 
     return render_template("post.html", **params)
