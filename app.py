@@ -49,6 +49,22 @@ def category(category):
 
     return render_template("index.html", **params)
 
+@app.route("/search")
+def search():
+    query = request.args.get("query", "")
+    records = table.search(query=query)
+    params = {
+        "author": author,
+        "avatar": avatar,
+        "posts": records,
+        "query": query,
+        "timestamp_format": lambda timestamp: datetime.datetime.fromtimestamp(
+            timestamp
+        ).strftime("%B %d, %Y %H:%M:%S"),
+    }
+
+    return render_template("index.html", **params)
+
 
 @app.route("/post/<post_id>")
 def post(post_id):
