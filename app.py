@@ -3,6 +3,7 @@ from leapcell import Leapcell
 import os
 import markdown
 import datetime
+import time
 
 
 app = Flask(__name__)
@@ -21,6 +22,7 @@ table = api.table(repository=resource, table_id=table_id, name_type="name")
 
 @app.route("/")
 def index():
+    start = time.time()
     records = table.select().query()
     params = {
         "author": author,
@@ -30,12 +32,14 @@ def index():
             timestamp
         ).strftime("%B %d, %Y %H:%M:%S"),
     }
+    print("time: ", time.time() - start)
 
     return render_template("index.html", **params)
 
 
 @app.route("/category/<category>")
 def category(category):
+    start = time.time()
     records = table.select().where(table["category"].contain(category)).query()
     params = {
         "author": author,
@@ -46,11 +50,12 @@ def category(category):
             timestamp
         ).strftime("%B %d, %Y %H:%M:%S"),
     }
-
+    print("time: ", time.time() - start)
     return render_template("index.html", **params)
 
 @app.route("/search")
 def search():
+    start = time.time()
     query = request.args.get("query", "")
     records = table.search(query=query)
     params = {
@@ -62,12 +67,13 @@ def search():
             timestamp
         ).strftime("%B %d, %Y %H:%M:%S"),
     }
-
+    print("time: ", time.time() - start)
     return render_template("index.html", **params)
 
 
 @app.route("/post/<post_id>")
 def post(post_id):
+    start = time.time()
     record = table.get_by_id(post_id)
     markdown_html = markdown.markdown(record["content"])
     params = {
@@ -79,7 +85,7 @@ def post(post_id):
             timestamp
         ).strftime("%B %d, %Y %H:%M:%S"),
     }
-
+    print("time: ", time.time() - start)
     return render_template("post.html", **params)
 
 
